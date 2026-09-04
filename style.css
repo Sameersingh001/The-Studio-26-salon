@@ -1610,25 +1610,41 @@ ul {
 
 /* Hero Section Mobile Adjustments (Height & Features) */
 @media (max-width: 576px) {
+    .container {
+        padding: 0 20px !important; /* Proper padding for all containers on mobile */
+    }
+
     .hero {
-        height: 55vh !important; /* Almost half screen */
-        min-height: 480px !important; /* Ensure it doesn't get too small */
+        height: auto !important; 
+        min-height: 55vh !important; 
+        padding-top: 120px !important; /* Proper top padding */
+        padding-bottom: 60px !important; /* Proper bottom padding */
     }
     
     .hero-features {
-        gap: 10px !important;
+        gap: 15px !important;
         flex-wrap: wrap !important;
         justify-content: flex-start !important;
+        padding: 10px !important; /* Added top/bottom padding */
+        margin-bottom: 25px !important;
     }
     
-    .hero-feature {
-        font-size: 11px !important;
-        letter-spacing: 0.5px !important;
+    .hero .feature {
+        font-size: 10px !important;
         gap: 6px !important;
-        margin-bottom: 5px !important;
+        flex: 1 1 40% !important; /* Let them wrap nicely 2 per row */
+        align-items: flex-start !important;
+        text-align: left !important;
+        flex-direction: row !important;
+    }
+
+    .hero .feature span {
+        font-size: 10px !important;
+        letter-spacing: 0.5px !important;
     }
     
-    .hero-feature i {
-        font-size: 13px !important;
+    .hero .feature i {
+        font-size: 16px !important;
+        margin-top: 3px;
     }
 }
