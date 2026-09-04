@@ -692,8 +692,14 @@ ul {
     padding: 30px;
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.05);
-    width: 400px;
+    width: 380px; /* for slider/marquee on homepage */
     flex-shrink: 0;
+}
+
+/* On reviews page, cards are in a grid so they should be full width */
+.reviews-grid .review-card {
+    width: 100% !important;
+    flex-shrink: unset;
 }
 
 .review-header {
@@ -926,6 +932,14 @@ ul {
     transform: translateY(0);
 }
 
+/* On mobile, always show elements - don't rely on scroll trigger for visibility */
+@media (max-width: 768px) {
+    .animate-fade-up {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
+}
+
 /* Responsive Design */
 @media (max-width: 1200px) {
     .services-grid {
@@ -1037,15 +1051,61 @@ ul {
         grid-template-rows: auto;
     }
     
+    /* Reviews page grid - 1 column full width on mobile */
+    .reviews-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+    
+    .reviews-grid .review-card {
+        width: 100% !important;
+        padding: 20px !important;
+    }
+    
     .item-1 { grid-column: 1 / -1; grid-row: auto; }
     
     .hero-cta {
         flex-direction: column;
     }
     
+    /* CTA Banner Mobile Fix */
+    .cta-box {
+        flex-direction: column !important;
+        padding: 30px 20px !important;
+        text-align: center !important;
+        gap: 25px !important;
+    }
+    
+    .cta-content {
+        flex-direction: column !important;
+        gap: 12px !important;
+        text-align: center !important;
+    }
+    
+    .cta-icon {
+        font-size: 36px !important;
+    }
+    
+    .cta-content h2 {
+        font-size: 22px !important;
+        line-height: 1.3 !important;
+    }
+    
+    .cta-content p {
+        font-size: 14px !important;
+    }
+    
     .cta-actions {
-        flex-direction: column;
-        width: 100%;
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 12px !important;
+    }
+    
+    .cta-actions .btn {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 14px 20px !important;
+        font-size: 13px !important;
     }
     
     .footer-grid {
@@ -1552,45 +1612,47 @@ ul {
    MOBILE REVIEWS FIX 
    ========================================= */
 
+/* Homepage slider cards - fixed width for horizontal scroll */
+@media (max-width: 768px) {
+    .reviews-track .review-card {
+        width: 300px !important;
+    }
+}
+
 @media (max-width: 576px) {
-    .review-card {
-        width: 280px !important; /* Scale down to fit mobile screens perfectly */
+    .reviews-track .review-card {
+        width: 260px !important;
         padding: 20px !important;
     }
     
     .reviews-track {
-        gap: 15px !important; /* Reduce gap between cards on mobile */
+        gap: 15px !important;
     }
-}
-
-@media (max-width: 768px) {
-    .review-card {
-        width: 320px !important;
-    }
-}
-
-
-/* Additional Mobile Reviews Fix */
-@media (max-width: 576px) {
-    .review-card {
-        width: 280px !important;
-        white-space: normal;
-        height: auto;
-    }
+    
     .review-text {
         font-size: 14px;
         line-height: 1.5;
     }
-}
 
+    /* Reviews PAGE grid - must be full width, one per row */
+    .reviews-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
 
-/* Ensure reviews slider does not collapse on mobile */
-@media (max-width: 576px) {
+    .reviews-grid .review-card {
+        width: 100% !important;
+        padding: 20px !important;
+        box-sizing: border-box !important;
+    }
+    
     .reviews-slider {
         min-height: 250px;
         display: flex;
     }
 }
+
+
 
 
 /* Reduce Logo size on Mobile */

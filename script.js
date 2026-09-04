@@ -57,8 +57,8 @@ const animationElements = document.querySelectorAll('.animate-fade-up');
 
 const observerOptions = {
     root: null,
-    rootMargin: '0px',
-    threshold: 0.15 // Trigger when 15% of element is visible
+    rootMargin: '0px 0px -50px 0px',
+    threshold: 0.05 // Trigger when just 5% of element is visible (fixes tall elements on mobile)
 };
 
 const observer = new IntersectionObserver((entries, observer) => {
