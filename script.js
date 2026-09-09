@@ -74,3 +74,31 @@ const observer = new IntersectionObserver((entries, observer) => {
 animationElements.forEach(element => {
     observer.observe(element);
 });
+
+// Auto-scroll logic for continuous running reels
+const reelsTracks = document.querySelectorAll('.reels-track');
+reelsTracks.forEach(track => {
+    let scrollSpeed = 0.5; // Slower speed so users can click
+    let scrollPos = 0;
+
+    // Duplicate content for seamless infinite scrolling
+    const content = track.innerHTML;
+    track.innerHTML = content + content; // Duplicate once
+
+    function autoScrollReels() {
+        scrollPos += scrollSpeed;
+        
+        // If scrolled past the first set of items, reset to 0 seamlessly
+        if (scrollPos >= track.scrollWidth / 2) {
+            scrollPos = 0;
+        }
+        
+        track.scrollLeft = scrollPos;
+        requestAnimationFrame(autoScrollReels);
+    }
+
+    // Start auto-scroll after a short delay to let embeds load
+    setTimeout(() => {
+        requestAnimationFrame(autoScrollReels);
+    }, 3000);
+});

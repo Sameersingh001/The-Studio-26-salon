@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reels - The Studio 26 Salon</title>
+    <link rel="icon" type="image/png" href="Logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body { background: #080808; }
+
+        /* ── Page fill ── */
+        .reels-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 110px 0 60px;
+            overflow: hidden;
+        }
+
+        /* ── Small label ── */
+        .reels-label {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .reels-label h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.6rem, 4vw, 2.8rem);
+            color: #fff;
+            letter-spacing: 4px;
+        }
+        .reels-label h1 span {
+            background: linear-gradient(to right, #f0d080, #cba052);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .reels-label p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.82rem;
+            color: #666;
+            margin-top: 8px;
+            letter-spacing: 1px;
+        }
+
+        /* ── Scroll strip ── */
+        .strip-outer {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* fade edges */
+        .strip-outer::before,
+        .strip-outer::after {
+            content: '';
+            position: absolute;
+            top: 0; height: 100%;
+            width: 80px;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .strip-outer::before { left:  0; background: linear-gradient(to right, #080808, transparent); }
+        .strip-outer::after  { right: 0; background: linear-gradient(to left,  #080808, transparent); }
+
+        /* The moving row — CSS animation for infinite scroll */
+        .strip-track {
+            display: flex;
+            gap: 22px;
+            padding: 20px 40px;
+            width: max-content;
+            animation: scrollLeft 45s linear infinite;
+        }
+
+        /* Pause on hover so user can click */
+        .strip-outer:hover .strip-track {
+            animation-play-state: paused;
+        }
+
+        @keyframes scrollLeft {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* ── Each reel card ── */
+        .reel-card {
+            flex: 0 0 auto;
+            width: 330px;
+            height: 430px;          /* clips at like/icon row, hides caption below */
+            overflow: hidden;
+            border-radius: 16px;
+            background: #111;
+            border: 1px solid rgba(203,160,82,0.2);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .reel-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(203,160,82,0.6);
+            box-shadow: 0 16px 40px rgba(203,160,82,0.15);
+        }
+
+        /* Instagram embed fills card — clipped by parent height */
+        .reel-card .instagram-media {
+            margin: 0 !important;
+            min-width: unset !important;
+            max-width: 100% !important;
+            width: 100% !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+
+        /* Also clip the iframe Instagram injects */
+        .reel-card iframe {
+            max-height: 100% !important;
+        }
+
+        /* Follow CTA */
+        .follow-cta {
+            text-align: center;
+            margin-top: 44px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <header class="header scrolled" id="header">
+        <div class="container nav-container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="Logo.png" alt="Logo" class="logo-icon-img">
+                    <div class="logo-text">
+                        <span class="logo-title">THE STUDIO 26</span>
+                        <span class="logo-subtitle">SALON</span>
+                    </div>
+                </a>
+            </div>
+            <nav class="navbar" id="navbar">
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="bridal.html">Bridal</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="reels.html" class="active">Reels</a></li>
+                    <li><a href="reviews.html">Reviews</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <a href="booking.html" class="btn btn-outline-gold"><i class="fa-solid fa-calendar-check"></i> Book Appointment</a>
+                <button class="mobile-toggle" id="mobile-toggle"><i class="fa-solid fa-bars"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Reels -->
+    <div class="reels-page">
+
+        <div class="reels-label">
+            <h1>Our <span>Instagram</span> Reels</h1>
+            <p>Tap any reel to watch with sound</p>
+        </div>
+
+        <div class="strip-outer">
+            <!-- All cards duplicated inside for seamless CSS loop -->
+            <div class="strip-track" id="stripTrack">
+
+                <div class="reel-card">
+                    <blockquote class="instagram-media" data-instgrm-captioned
+                        data-instgrm-permalink="https://www.instagram.com/reel/DZ4R6ShPRcn/?utm_source=ig_embed&amp;utm_campaign=loading"
+                        data-instgrm-version="14"></blockquote>
+                </div>
+
+                <div class="reel-card">
+                    <blockquote class="instagram-media" data-instgrm-captioned
+                        data-instgrm-permalink="https://www.instagram.com/reel/Db0weRuSuUp/?utm_source=ig_embed&amp;utm_campaign=loading"
+                        data-instgrm-version="14"></blockquote>
+                </div>
+
+                <div class="reel-card">
+                    <blockquote class="instagram-media" data-instgrm-captioned
+                        data-instgrm-permalink="https://www.instagram.com/reel/DbgYXg8SV9w/?utm_source=ig_embed&amp;utm_campaign=loading"
+                        data-instgrm-version="14"></blockquote>
+                </div>
+
+                <div class="reel-card">
+                    <blockquote class="instagram-media" data-instgrm-captioned
+                        data-instgrm-permalink="https://www.instagram.com/reel/Da0ngxNy6Y2/?utm_source=ig_embed&amp;utm_campaign=loading"
+                        data-instgrm-version="14"></blockquote>
+                </div>
+
+                <div class="reel-card">
+                    <blockquote class="instagram-media" data-instgrm-captioned
+                        data-instgrm-permalink="https://www.instagram.com/reel/Das5TYvyVT7/?utm_source=ig_embed&amp;utm_campaign=loading"
+                        data-instgrm-version="14"></blockquote>
+                </div>
+
+                <div class="reel-card">
+                    <blockquote class="instagram-media" data-instgrm-captioned
+                        data-instgrm-permalink="https://www.instagram.com/reel/DXbyBP1EmND/?utm_source=ig_embed&amp;utm_campaign=loading"
+                        data-instgrm-version="14"></blockquote>
+                </div>
+
+                <div class="reel-card">
+                    <blockquote class="instagram-media" data-instgrm-captioned
+                        data-instgrm-permalink="https://www.instagram.com/reel/DYytlBcx3_S/?utm_source=ig_embed&amp;utm_campaign=loading"
+                        data-instgrm-version="14"></blockquote>
+                </div>
+
+                <div class="reel-card">
+                    <blockquote class="instagram-media" data-instgrm-captioned
+                        data-instgrm-permalink="https://www.instagram.com/reel/DaBK4t2ShoB/?utm_source=ig_embed&amp;utm_campaign=loading"
+                        data-instgrm-version="14"></blockquote>
+                </div>
+
+                <!-- DUPLICATE SET for seamless loop -->
+                <div class="reel-card">
+                    <blockquote class="instagram-media" data-instgrm-captioned
+                        data-instgrm-permalink="https://www.instagram.com/reel/DZ4R6ShPRcn/?utm_source=ig_embed&amp;utm_campaign=loading"
+                        data-instgrm-version="14"></blockquote>
+                </div>
+
+                <div class="reel-card">
+                    <blockquote class="instagram-media" data-instgrm-captioned
+                        data-instgrm-permalink="https://www.instagram.com/reel/Db0weRuSuUp/?utm_source=ig_embed&amp;utm_campaign=loading"
+                        data-instgrm-version="14"></blockquote>
+                </div>
+
+                <div class="reel-card">
+                    <blockquote class="instagram-media" data-instgrm-captioned
+                        data-instgrm-permalink="https://www.instagram.com/reel/DbgYXg8SV9w/?utm_source=ig_embed&amp;utm_campaign=loading"
+                        data-instgrm-version="14"></blockquote>
+                </div>
+
+                <div class="reel-card">
+                    <blockquote class="instagram-media" data-instgrm-captioned
+                        data-instgrm-permalink="https://www.instagram.com/reel/Da0ngxNy6Y2/?utm_source=ig_embed&amp;utm_campaign=loading"
+                        data-instgrm-version="14"></blockquote>
+                </div>
+
+                <div class="reel-card">
+                    <blockquote class="instagram-media" data-instgrm-captioned
+                        data-instgrm-permalink="https://www.instagram.com/reel/Das5TYvyVT7/?utm_source=ig_embed&amp;utm_campaign=loading"
+                        data-instgrm-version="14"></blockquote>
+                </div>
+
+                <div class="reel-card">
+                    <blockquote class="instagram-media" data-instgrm-captioned
+                        data-instgrm-permalink="https://www.instagram.com/reel/DXbyBP1EmND/?utm_source=ig_embed&amp;utm_campaign=loading"
+                        data-instgrm-version="14"></blockquote>
+                </div>
+
+                <div class="reel-card">
+                    <blockquote class="instagram-media" data-instgrm-captioned
+                        data-instgrm-permalink="https://www.instagram.com/reel/DYytlBcx3_S/?utm_source=ig_embed&amp;utm_campaign=loading"
+                        data-instgrm-version="14"></blockquote>
+                </div>
+
+                <div class="reel-card">
+                    <blockquote class="instagram-media" data-instgrm-captioned
+                        data-instgrm-permalink="https://www.instagram.com/reel/DaBK4t2ShoB/?utm_source=ig_embed&amp;utm_campaign=loading"
+                        data-instgrm-version="14"></blockquote>
+                </div>
+
+            </div><!-- /strip-track -->
+        </div><!-- /strip-outer -->
+
+        <div class="follow-cta">
+            <a href="https://www.instagram.com/the.studio26.salon/" target="_blank" class="btn btn-gold">
+                <i class="fa-brands fa-instagram"></i> &nbsp; @the.studio26.salon
+            </a>
+        </div>
+
+    </div><!-- /reels-page -->
+
+    <!-- Instagram embed script -->
+    <script async src="https://www.instagram.com/embed.js"></script>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-col brand-col">
+                <div class="logo">
+                    <img src="Logo.png" alt="Logo" class="logo-icon-img">
+                    <div class="logo-text">
+                        <span class="logo-title">THE STUDIO 26</span>
+                        <span class="logo-subtitle">SALON</span>
+                    </div>
+                </div>
+                <p class="footer-desc">Elevating beauty & confidence with expert care and luxury services in Agra.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/the.studio26.salon/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://wa.me/917536055666"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h3>QUICK LINKS</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="booking.html">Book Appointment</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="reviews.html">Reviews</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>OUR SERVICES</h3>
+                <ul>
+                    <li><a href="booking.html?service=Hair">Hair Services</a></li>
+                    <li><a href="booking.html?service=Makeup">Makeup</a></li>
+                    <li><a href="booking.html?service=Bridal">Bridal</a></li>
+                    <li><a href="booking.html?service=Nail">Nail Services</a></li>
+                    <li><a href="booking.html?service=Facial">Skin & Beauty</a></li>
+                </ul>
+            </div>
+            <div class="footer-col contact-col">
+                <h3>CONTACT INFO</h3>
+                <ul>
+                    <li><i class="fa-solid fa-location-dot"></i><span>Lohamandi, Agra, UP 282007</span></li>
+                    <li><i class="fa-solid fa-phone"></i><a href="tel:07536055666">075360 55666</a></li>
+                    <li><i class="fa-regular fa-clock"></i><span>Mon–Sun: 9 AM – 9 PM</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom container">
+            <p>&copy; 2024 The Studio 26 Salon. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/917536055666" class="floating-wa" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+
+    <script src="script.js"></script>
+</body>
+</html>

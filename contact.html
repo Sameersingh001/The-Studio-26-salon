@@ -40,13 +40,14 @@
                     <li><a href="services.html">Services</a></li>
                     <li><a href="bridal.html">Bridal</a></li>
                     <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="reels.html">Reels</a></li>
                     <li><a href="reviews.html">Reviews</a></li>
                     <li><a href="contact.html">Contact</a></li>
                 </ul>
             </nav>
             
             <div class="nav-actions">
-                <a href="tel:07536055666" class="btn btn-outline-gold"><i class="fa-solid fa-calendar-check"></i> Book Appointment</a>
+                <a href="booking.html" class="btn btn-outline-gold"><i class="fa-solid fa-calendar-check"></i> Book Appointment</a>
                 <button class="mobile-toggle" id="mobile-toggle">
                     <i class="fa-solid fa-bars"></i>
                 </button>
@@ -111,6 +112,73 @@
     <!-- Reviews Section -->
     
 
+    <!-- Booking Form Section -->
+    <section class="section bg-dark">
+        <div class="container">
+            <div class="section-header text-center animate-fade-up">
+                <h4 class="section-subtitle">RESERVE YOUR SPOT</h4>
+                <h2 class="section-title">Book an Appointment</h2>
+                <p style="color:#888; font-family:'Montserrat',sans-serif; font-size:0.9rem; margin-top:10px;">Fill in your details and we'll confirm your booking within 1-2 hours.</p>
+            </div>
+            <div style="max-width: 750px; margin: 40px auto 0;">
+                <div style="background:#111; border:1px solid rgba(203,160,82,0.25); border-radius:20px; padding:40px; box-shadow:0 20px 60px rgba(0,0,0,0.4);">
+                    <form id="contactBookingForm" novalidate>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:18px;">
+                            <div style="display:flex; flex-direction:column; gap:7px; margin-bottom:18px;">
+                                <label style="font-family:'Montserrat',sans-serif; font-size:0.75rem; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:#cba052;">Full Name <span style="color:#e55;">*</span></label>
+                                <input type="text" id="c_name" placeholder="Your full name" style="background:rgba(255,255,255,0.04); border:1px solid rgba(203,160,82,0.2); border-radius:10px; padding:13px 15px; color:#fff; font-family:'Montserrat',sans-serif; font-size:0.88rem; outline:none; width:100%; box-sizing:border-box;" required>
+                            </div>
+                            <div style="display:flex; flex-direction:column; gap:7px; margin-bottom:18px;">
+                                <label style="font-family:'Montserrat',sans-serif; font-size:0.75rem; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:#cba052;">Phone <span style="color:#e55;">*</span></label>
+                                <input type="tel" id="c_phone" placeholder="+91 98765 43210" style="background:rgba(255,255,255,0.04); border:1px solid rgba(203,160,82,0.2); border-radius:10px; padding:13px 15px; color:#fff; font-family:'Montserrat',sans-serif; font-size:0.88rem; outline:none; width:100%; box-sizing:border-box;" required>
+                            </div>
+                        </div>
+                        <div style="display:flex; flex-direction:column; gap:7px; margin-bottom:18px;">
+                            <label style="font-family:'Montserrat',sans-serif; font-size:0.75rem; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:#cba052;">Email Address <span style="color:#e55;">*</span></label>
+                            <input type="email" id="c_email" placeholder="you@email.com (for confirmation)" style="background:rgba(255,255,255,0.04); border:1px solid rgba(203,160,82,0.2); border-radius:10px; padding:13px 15px; color:#fff; font-family:'Montserrat',sans-serif; font-size:0.88rem; outline:none; width:100%; box-sizing:border-box;" required>
+                        </div>
+                        <div style="display:flex; flex-direction:column; gap:7px; margin-bottom:18px;">
+                            <label style="font-family:'Montserrat',sans-serif; font-size:0.75rem; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:#cba052;">Select Service <span style="color:#e55;">*</span></label>
+                            <select id="c_service" style="background:#1a1a1a; border:1px solid rgba(203,160,82,0.2); border-radius:10px; padding:13px 15px; color:#fff; font-family:'Montserrat',sans-serif; font-size:0.88rem; outline:none; width:100%; box-sizing:border-box;" required>
+                                <option value="" disabled selected>Choose a service...</option>
+                                <optgroup label="Hair Services"><option>Haircut & Styling</option><option>Hair Coloring</option><option>Balayage / Highlights</option><option>Keratin Treatment</option><option>Hair Spa</option></optgroup>
+                                <optgroup label="Makeup"><option>Party Makeup</option><option>HD Makeup</option><option>Airbrush Makeup</option><option>Engagement Makeup</option></optgroup>
+                                <optgroup label="Bridal"><option>Bridal Makeup Package</option><option>Pre-Bridal Package</option><option>Complete Bridal Package</option></optgroup>
+                                <optgroup label="Nail Services"><option>Acrylic Nail Extensions</option><option>Gel Nail Extensions</option><option>Nail Art</option><option>Manicure</option><option>Pedicure</option></optgroup>
+                                <optgroup label="Skin & Beauty"><option>Facial</option><option>Deep Cleanup</option><option>Waxing</option><option>Threading</option><option>Bleach</option></optgroup>
+                                <optgroup label="Spa & Wellness"><option>Head Massage</option><option>Body Massage</option><option>De-Tan Treatment</option></optgroup>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:18px;">
+                            <div style="display:flex; flex-direction:column; gap:7px; margin-bottom:18px;">
+                                <label style="font-family:'Montserrat',sans-serif; font-size:0.75rem; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:#cba052;">Date <span style="color:#e55;">*</span></label>
+                                <input type="date" id="c_date" style="background:rgba(255,255,255,0.04); border:1px solid rgba(203,160,82,0.2); border-radius:10px; padding:13px 15px; color:#fff; font-family:'Montserrat',sans-serif; font-size:0.88rem; outline:none; width:100%; box-sizing:border-box;" required>
+                            </div>
+                            <div style="display:flex; flex-direction:column; gap:7px; margin-bottom:18px;">
+                                <label style="font-family:'Montserrat',sans-serif; font-size:0.75rem; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:#cba052;">Time <span style="color:#e55;">*</span></label>
+                                <select id="c_time" style="background:#1a1a1a; border:1px solid rgba(203,160,82,0.2); border-radius:10px; padding:13px 15px; color:#fff; font-family:'Montserrat',sans-serif; font-size:0.88rem; outline:none; width:100%; box-sizing:border-box;" required>
+                                    <option value="" disabled selected>Select time...</option>
+                                    <option>09:00 AM</option><option>10:00 AM</option><option>11:00 AM</option><option>12:00 PM</option>
+                                    <option>01:00 PM</option><option>02:00 PM</option><option>03:00 PM</option><option>04:00 PM</option>
+                                    <option>05:00 PM</option><option>06:00 PM</option><option>07:00 PM</option><option>08:00 PM</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="display:flex; flex-direction:column; gap:7px; margin-bottom:24px;">
+                            <label style="font-family:'Montserrat',sans-serif; font-size:0.75rem; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:#cba052;">Notes</label>
+                            <textarea id="c_notes" placeholder="Any special requests..." rows="3" style="background:rgba(255,255,255,0.04); border:1px solid rgba(203,160,82,0.2); border-radius:10px; padding:13px 15px; color:#fff; font-family:'Montserrat',sans-serif; font-size:0.88rem; outline:none; width:100%; box-sizing:border-box; resize:vertical;"></textarea>
+                        </div>
+                        <button type="submit" id="cSubmitBtn" style="width:100%; padding:15px; background:linear-gradient(135deg,#cba052,#8a6820); color:#000; font-family:'Cinzel',serif; font-size:0.95rem; font-weight:700; letter-spacing:2px; border:none; border-radius:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; transition:all 0.3s;">
+                            <i class="fa-solid fa-calendar-check"></i> Book Appointment
+                        </button>
+                    </form>
+                    <div id="c_toast" style="display:none; margin-top:20px; padding:14px 20px; border-radius:10px; font-family:'Montserrat',sans-serif; font-size:0.88rem; text-align:center;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- CTA Banner -->
     <section class="cta-banner section">
         <div class="container">
@@ -123,7 +191,7 @@
                     </div>
                 </div>
                 <div class="cta-actions">
-                    <a href="tel:07536055666" class="btn btn-gold">Book Now</a>
+                    <a href="booking.html" class="btn btn-gold">Book Now</a>
                     <a href="https://wa.me/917536055666" class="btn btn-green"><i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp</a>
                 </div>
             </div>
@@ -157,6 +225,7 @@
                     <li><a href="services.html">Services</a></li>
                     <li><a href="bridal.html">Bridal</a></li>
                     <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="reels.html">Reels</a></li>
                     <li><a href="reviews.html">Reviews</a></li>
                     <li><a href="contact.html">Contact</a></li>
                 </ul>
@@ -210,5 +279,59 @@
 
     <!-- Custom JS -->
     <script src="script.js"></script>
+    <script>
+        const API = 'http://localhost:3001/api';
+
+        // Set min date
+        const cd = document.getElementById('c_date');
+        if (cd) cd.setAttribute('min', new Date().toISOString().split('T')[0]);
+
+        document.getElementById('contactBookingForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name    = document.getElementById('c_name').value.trim();
+            const phone   = document.getElementById('c_phone').value.trim();
+            const email   = document.getElementById('c_email') ? document.getElementById('c_email').value.trim() : '';
+            const service = document.getElementById('c_service').value;
+            const date    = document.getElementById('c_date').value;
+            const time    = document.getElementById('c_time').value;
+            const notes   = document.getElementById('c_notes').value.trim();
+
+            const toast = document.getElementById('c_toast');
+
+            if (!name || !phone || !email || !service || !date || !time) {
+                toast.textContent = '⚠️ Please fill all required fields, including email.';
+                toast.style.cssText = 'display:block; background:rgba(229,85,85,0.15); border:1px solid #e55; color:#e55; margin-top:20px; padding:14px 20px; border-radius:10px; font-family:Montserrat,sans-serif; font-size:0.88rem; text-align:center;';
+                return;
+            }
+
+            const btn = document.getElementById('cSubmitBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Booking...';
+
+            try {
+                const res = await fetch(`${API}/book`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, phone, email, service, date, time, notes, source: 'contact-page' })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    toast.textContent = '✅ Appointment booked! We will confirm you shortly.';
+                    toast.style.cssText = 'display:block; background:rgba(76,175,80,0.15); border:1px solid #4caf50; color:#4caf50; margin-top:20px; padding:14px 20px; border-radius:10px; font-family:Montserrat,sans-serif; font-size:0.88rem; text-align:center;';
+                    document.getElementById('contactBookingForm').reset();
+                } else {
+                    throw new Error(data.message);
+                }
+            } catch (err) {
+                const waText = encodeURIComponent(`Hi! I want to book an appointment.\nName: ${name}\nPhone: ${phone}\nService: ${service}\nDate: ${date}\nTime: ${time}`);
+                toast.innerHTML = '⚠️ Server not reachable. <a href="https://wa.me/917536055666?text=' + waText + '" target="_blank" style="color:#cba052;">Book via WhatsApp instead →</a>';
+                toast.style.cssText = 'display:block; background:rgba(203,160,82,0.1); border:1px solid #cba052; color:#ccc; margin-top:20px; padding:14px 20px; border-radius:10px; font-family:Montserrat,sans-serif; font-size:0.88rem; text-align:center;';
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-calendar-check"></i> Book Appointment';
+            }
+        });
+    </script>
 </body>
+
 </html>

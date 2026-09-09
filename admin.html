@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - The Studio 26 Salon</title>
+    <link rel="icon" type="image/png" href="Logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0a0a0a; color: #fff; font-family: 'Montserrat', sans-serif; min-height: 100vh; }
+
+        /* ─── Login Screen ─── */
+        #loginScreen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(ellipse at center, rgba(203,160,82,0.08) 0%, #0a0a0a 70%);
+        }
+
+        .login-card {
+            background: #111;
+            border: 1px solid rgba(203,160,82,0.3);
+            border-radius: 20px;
+            padding: 50px 45px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+        }
+
+        .login-card .logo-area {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .login-card .logo-area h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            color: #cba052;
+            letter-spacing: 3px;
+        }
+
+        .login-card .logo-area p {
+            color: #666;
+            font-size: 0.8rem;
+            margin-top: 6px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .login-card input {
+            width: 100%;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(203,160,82,0.2);
+            border-radius: 10px;
+            padding: 14px 16px;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+            margin-bottom: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .login-card input:focus { border-color: #cba052; }
+
+        .login-card button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #cba052, #8a6820);
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .login-card button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(203,160,82,0.3); }
+        .login-error { color: #e55; font-size: 0.8rem; text-align: center; margin-top: 10px; }
+
+        /* ─── Admin Dashboard ─── */
+        #dashboard { display: none; }
+
+        .admin-header {
+            background: linear-gradient(135deg, #111, #0a0a0a);
+            border-bottom: 1px solid rgba(203,160,82,0.2);
+            padding: 18px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .admin-header h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            color: #cba052;
+            letter-spacing: 2px;
+        }
+
+        .admin-header .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .refresh-btn, .logout-btn {
+            background: rgba(203,160,82,0.1);
+            border: 1px solid rgba(203,160,82,0.3);
+            color: #cba052;
+            padding: 8px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+        .refresh-btn:hover, .logout-btn:hover { background: rgba(203,160,82,0.2); }
+        .logout-btn { color: #e55; border-color: rgba(229,85,85,0.3); background: rgba(229,85,85,0.05); }
+        .logout-btn:hover { background: rgba(229,85,85,0.15); }
+
+        /* ─── Stats Bar ─── */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .stats-bar { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        .stat-card {
+            background: #111;
+            border: 1px solid rgba(203,160,82,0.15);
+            border-radius: 14px;
+            padding: 22px;
+            text-align: center;
+        }
+
+        .stat-card .stat-number {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #cba052;
+        }
+
+        .stat-card .stat-label {
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ─── Table ─── */
+        .table-section { padding: 0 30px 40px; }
+
+        .table-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .table-header h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            color: #fff;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: #1a1a1a;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #aaa;
+            padding: 7px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.78rem;
+            transition: all 0.25s;
+        }
+        .filter-btn.active, .filter-btn:hover { background: rgba(203,160,82,0.15); border-color: #cba052; color: #cba052; }
+
+        .search-input {
+            background: #1a1a1a;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.82rem;
+            outline: none;
+            width: 220px;
+            transition: border-color 0.3s;
+        }
+        .search-input:focus { border-color: #cba052; }
+
+        .table-wrapper {
+            background: #111;
+            border: 1px solid rgba(203,160,82,0.15);
+            border-radius: 16px;
+            overflow: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        thead th {
+            background: rgba(203,160,82,0.08);
+            padding: 14px 18px;
+            text-align: left;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #cba052;
+            white-space: nowrap;
+        }
+
+        tbody td {
+            padding: 14px 18px;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            font-size: 0.85rem;
+            color: #ccc;
+            vertical-align: middle;
+        }
+
+        tbody tr:hover td { background: rgba(255,255,255,0.02); }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .status-Pending  { background: rgba(255,193,7,0.15);  color: #ffc107; border: 1px solid rgba(255,193,7,0.3); }
+        .status-Confirmed{ background: rgba(76,175,80,0.15);  color: #4caf50; border: 1px solid rgba(76,175,80,0.3); }
+        .status-Cancelled{ background: rgba(229,85,85,0.15);  color: #e55;    border: 1px solid rgba(229,85,85,0.3); }
+        .status-Completed{ background: rgba(33,150,243,0.15); color: #64b5f6; border: 1px solid rgba(33,150,243,0.3); }
+
+        .action-btns { display: flex; gap: 8px; }
+
+        .action-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #aaa;
+            padding: 6px 12px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.25s;
+            white-space: nowrap;
+        }
+        .action-btn:hover { background: rgba(203,160,82,0.15); color: #cba052; border-color: #cba052; }
+        .action-btn.del:hover { background: rgba(229,85,85,0.15); color: #e55; border-color: #e55; }
+
+        .status-select {
+            background: #1a1a1a;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 7px;
+            font-size: 0.78rem;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #555;
+        }
+
+        .empty-state i { font-size: 3rem; margin-bottom: 15px; display: block; }
+
+        /* ─── Toast ─── */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1a1a1a;
+            border: 1px solid #cba052;
+            color: #fff;
+            padding: 14px 24px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            z-index: 9999;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+
+        /* Loading spinner */
+        .spinner { text-align: center; padding: 50px; color: #cba052; font-size: 1.5rem; }
+    </style>
+</head>
+<body>
+
+<!-- ── Login Screen ── -->
+<div id="loginScreen">
+    <div class="login-card">
+        <div class="logo-area">
+            <h1>THE STUDIO 26</h1>
+            <p>Admin Panel</p>
+        </div>
+        <input type="password" id="adminPassword" placeholder="Enter admin password" onkeydown="if(event.key==='Enter') login()">
+        <button onclick="login()"><i class="fa-solid fa-lock"></i> &nbsp; Sign In</button>
+        <p class="login-error" id="loginError"></p>
+    </div>
+</div>
+
+<!-- ── Dashboard ── -->
+<div id="dashboard">
+
+    <div class="admin-header">
+        <h1><i class="fa-solid fa-calendar-check" style="margin-right:10px;"></i> Appointments Dashboard</h1>
+        <div class="header-right">
+            <button class="refresh-btn" onclick="loadAppointments()"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+            <a href="index.html" class="refresh-btn" style="text-decoration:none;"><i class="fa-solid fa-house"></i> Website</a>
+            <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-bar" id="statsBar">
+        <div class="stat-card"><div class="stat-number" id="statTotal">—</div><div class="stat-label">Total Bookings</div></div>
+        <div class="stat-card"><div class="stat-number" id="statPending" style="color:#ffc107;">—</div><div class="stat-label">Pending</div></div>
+        <div class="stat-card"><div class="stat-number" id="statConfirmed" style="color:#4caf50;">—</div><div class="stat-label">Confirmed</div></div>
+        <div class="stat-card"><div class="stat-number" id="statToday">—</div><div class="stat-label">Today's Bookings</div></div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-section">
+        <div class="table-header">
+            <h2>All Appointments</h2>
+            <div class="filter-group">
+                <input type="text" class="search-input" id="searchInput" placeholder="🔍 Search name / service..." oninput="filterTable()">
+                <button class="filter-btn active" onclick="setFilter('All', this)">All</button>
+                <button class="filter-btn" onclick="setFilter('Pending', this)">Pending</button>
+                <button class="filter-btn" onclick="setFilter('Confirmed', this)">Confirmed</button>
+                <button class="filter-btn" onclick="setFilter('Cancelled', this)">Cancelled</button>
+                <button class="filter-btn" onclick="setFilter('Completed', this)">Completed</button>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <div class="spinner" id="loadingSpinner"><i class="fa-solid fa-spinner fa-spin"></i></div>
+            <table id="appointmentsTable" style="display:none;">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Client</th>
+                        <th>Phone</th>
+                        <th>Service</th>
+                        <th>Date & Time</th>
+                        <th>Status</th>
+                        <th>Booked On</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+            <div class="empty-state" id="emptyState" style="display:none;">
+                <i class="fa-solid fa-calendar-xmark"></i>
+                No appointments found.
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+    const API = 'http://localhost:3001/api';
+    let adminPassword = '';
+    let allAppointments = [];
+    let currentFilter = 'All';
+
+    function login() {
+        const pw = document.getElementById('adminPassword').value;
+        if (!pw) { document.getElementById('loginError').textContent = 'Please enter password.'; return; }
+        adminPassword = pw;
+        loadAppointments();
+    }
+
+    async function loadAppointments() {
+        try {
+            const res = await fetch(`${API}/appointments`, {
+                headers: { 'x-admin-password': adminPassword }
+            });
+
+            if (res.status === 401) {
+                document.getElementById('loginError').textContent = 'Wrong password. Try again.';
+                return;
+            }
+
+            const data = await res.json();
+            allAppointments = data.appointments || [];
+
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+
+            updateStats();
+            renderTable();
+        } catch (err) {
+            document.getElementById('loginError').textContent = 'Cannot connect to server. Make sure the server is running.';
+        }
+    }
+
+    function updateStats() {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('statTotal').textContent     = allAppointments.length;
+        document.getElementById('statPending').textContent   = allAppointments.filter(a => a.status === 'Pending').length;
+        document.getElementById('statConfirmed').textContent = allAppointments.filter(a => a.status === 'Confirmed').length;
+        document.getElementById('statToday').textContent     = allAppointments.filter(a => a.date === today || a.date.startsWith(today)).length;
+    }
+
+    function renderTable() {
+        const search  = document.getElementById('searchInput').value.toLowerCase();
+        let filtered  = allAppointments.filter(a => {
+            const matchFilter = currentFilter === 'All' || a.status === currentFilter;
+            const matchSearch = a.name.toLowerCase().includes(search) || a.service.toLowerCase().includes(search) || a.phone.includes(search);
+            return matchFilter && matchSearch;
+        });
+
+        const tbody = document.getElementById('tableBody');
+        document.getElementById('loadingSpinner').style.display = 'none';
+
+        if (filtered.length === 0) {
+            document.getElementById('appointmentsTable').style.display = 'none';
+            document.getElementById('emptyState').style.display = 'block';
+            return;
+        }
+
+        document.getElementById('appointmentsTable').style.display = 'table';
+        document.getElementById('emptyState').style.display = 'none';
+
+        tbody.innerHTML = filtered.map((a, i) => `
+            <tr id="row-${a._id}">
+                <td style="color:#555; font-size:0.78rem;">${i + 1}</td>
+                <td>
+                    <div style="font-weight:600; color:#fff;">${a.name}</div>
+                    <div style="color:#666; font-size:0.75rem;">${a.email || 'No email'}</div>
+                </td>
+                <td><a href="tel:${a.phone}" style="color:#cba052; text-decoration:none;">${a.phone}</a></td>
+                <td style="max-width:180px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${a.service}">${a.service}</td>
+                <td>
+                    <div style="font-weight:600;">${a.date}</div>
+                    <div style="color:#888; font-size:0.78rem;">${a.time}</div>
+                </td>
+                <td><span class="status-badge status-${a.status}">${a.status}</span></td>
+                <td style="color:#666; font-size:0.78rem;">${new Date(a.createdAt).toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'})}</td>
+                <td>
+                    <div class="action-btns">
+                        <select class="status-select" onchange="updateStatus('${a._id}', this.value)">
+                            <option ${a.status==='Pending'  ?'selected':''} value="Pending">Pending</option>
+                            <option ${a.status==='Confirmed'?'selected':''} value="Confirmed">Confirmed</option>
+                            <option ${a.status==='Completed'?'selected':''} value="Completed">Completed</option>
+                            <option ${a.status==='Cancelled'?'selected':''} value="Cancelled">Cancelled</option>
+                        </select>
+                        <button class="action-btn del" onclick="deleteAppointment('${a._id}')"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                    ${a.notes ? `<div style="color:#666; font-size:0.72rem; margin-top:6px; max-width:200px;">📝 ${a.notes}</div>` : ''}
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    async function updateStatus(id, status) {
+        try {
+            const res = await fetch(`${API}/appointments/${id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json', 'x-admin-password': adminPassword },
+                body: JSON.stringify({ status })
+            });
+            const data = await res.json();
+            if (data.success) {
+                const appt = allAppointments.find(a => a._id === id);
+                if (appt) appt.status = status;
+                updateStats();
+                renderTable();
+                showToast(`Status updated to ${status}`);
+            }
+        } catch (err) { showToast('Failed to update status', 'error'); }
+    }
+
+    async function deleteAppointment(id) {
+        if (!confirm('Delete this appointment?')) return;
+        try {
+            const res = await fetch(`${API}/appointments/${id}`, {
+                method: 'DELETE',
+                headers: { 'x-admin-password': adminPassword }
+            });
+            const data = await res.json();
+            if (data.success) {
+                allAppointments = allAppointments.filter(a => a._id !== id);
+                updateStats();
+                renderTable();
+                showToast('Appointment deleted');
+            }
+        } catch (err) { showToast('Failed to delete', 'error'); }
+    }
+
+    function setFilter(f, btn) {
+        currentFilter = f;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderTable();
+    }
+
+    function filterTable() { renderTable(); }
+
+    function logout() {
+        adminPassword = '';
+        document.getElementById('dashboard').style.display = 'none';
+        document.getElementById('loginScreen').style.display = 'flex';
+        document.getElementById('adminPassword').value = '';
+    }
+
+    function showToast(msg, type = 'success') {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.style.borderColor = type === 'error' ? '#e55' : '#cba052';
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // Auto-refresh every 60 seconds when dashboard is visible
+    setInterval(() => {
+        if (document.getElementById('dashboard').style.display !== 'none' && adminPassword) {
+            loadAppointments();
+        }
+    }, 60000);
+</script>
+</body>
+</html>

@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment - The Studio 26 Salon</title>
+    <link rel="icon" type="image/png" href="Logo.png">
+    <meta name="description" content="Book your appointment at The Studio 26 Salon, Agra. Choose from hair, makeup, bridal, nails, skin and more services.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .booking-hero {
+            min-height: 320px;
+            background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.88)),
+                        url('Orignal/Counter.png') center/cover no-repeat;
+            display: flex;
+            align-items: flex-end;
+            padding-bottom: 60px;
+            padding-top: 120px;
+        }
+        .booking-hero h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: #fff;
+            font-weight: 600;
+        }
+        .booking-hero h1 span {
+            background: linear-gradient(to right, #f0d080, #cba052);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ─── Booking Layout ─── */
+        .booking-section {
+            padding: 80px 0;
+            background: #0e0e0e;
+        }
+
+        .booking-grid {
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 50px;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .booking-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ─── Form Card ─── */
+        .booking-form-card {
+            background: linear-gradient(145deg, #161616, #111);
+            border: 1px solid rgba(203,160,82,0.25);
+            border-radius: 20px;
+            padding: 45px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .booking-form-card h2 {
+            font-family: 'Cinzel', serif;
+            color: #fff;
+            font-size: 1.6rem;
+            margin-bottom: 8px;
+        }
+
+        .booking-form-card p.sub {
+            color: #888;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            margin-bottom: 35px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+        @media (max-width: 600px) {
+            .form-row { grid-template-columns: 1fr; }
+            .booking-form-card { padding: 25px; }
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #cba052;
+        }
+
+        .form-group label span.req { color: #e55; margin-left: 3px; }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(203,160,82,0.2);
+            border-radius: 10px;
+            padding: 14px 16px;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            outline: none;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .form-group select option {
+            background: #1a1a1a;
+            color: #fff;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #cba052;
+            box-shadow: 0 0 0 3px rgba(203,160,82,0.1);
+        }
+
+        .form-group textarea { resize: vertical; min-height: 100px; }
+
+        /* Service category headings in select */
+        .form-group select optgroup {
+            color: #cba052;
+            font-weight: bold;
+        }
+
+        .booking-submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #cba052, #8a6820);
+            color: #000;
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .booking-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(203,160,82,0.35);
+        }
+
+        .booking-submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ─── Toast notification ─── */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #1a1a1a;
+            border: 1px solid #cba052;
+            color: #fff;
+            padding: 16px 30px;
+            border-radius: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            z-index: 9999;
+            transition: transform 0.4s ease;
+            text-align: center;
+            max-width: 90vw;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+        .toast.success { border-color: #4caf50; }
+        .toast.error { border-color: #e55; }
+
+        /* ─── Info Sidebar ─── */
+        .booking-info {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .info-card {
+            background: linear-gradient(145deg, #161616, #111);
+            border: 1px solid rgba(203,160,82,0.2);
+            border-radius: 16px;
+            padding: 30px;
+        }
+
+        .info-card h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            color: #cba052;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .info-card ul li {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            color: #bbb;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-card ul li:last-child { border-bottom: none; }
+        .info-card ul li i { color: #cba052; width: 16px; }
+
+        .info-card .timing-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .info-card .timing-row:last-child { border-bottom: none; }
+        .info-card .timing-row span:first-child { color: #bbb; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; }
+        .info-card .timing-row span:last-child { color: #cba052; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; font-weight: 600; }
+
+        .whatsapp-book {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px;
+            background: #25d366;
+            color: #fff;
+            border-radius: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .whatsapp-book:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37,211,102,0.3); }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header scrolled" id="header">
+        <div class="container nav-container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="Logo.png" alt="Logo" class="logo-icon-img">
+                    <div class="logo-text">
+                        <span class="logo-title">THE STUDIO 26</span>
+                        <span class="logo-subtitle">SALON</span>
+                    </div>
+                </a>
+            </div>
+            <nav class="navbar" id="navbar">
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="bridal.html">Bridal</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="reels.html">Reels</a></li>
+                    <li><a href="reviews.html">Reviews</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <a href="booking.html" class="btn btn-outline-gold active"><i class="fa-solid fa-calendar-check"></i> Book Appointment</a>
+                <button class="mobile-toggle" id="mobile-toggle"><i class="fa-solid fa-bars"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <div class="booking-hero">
+        <div class="container">
+            <p style="color:#cba052; font-family:'Montserrat',sans-serif; font-size:0.8rem; letter-spacing:3px; text-transform:uppercase; margin-bottom:12px;">✦ Reserve Your Spot ✦</p>
+            <h1>Book Your <span>Appointment</span></h1>
+            <p style="color:#bbb; font-family:'Montserrat',sans-serif; font-size:0.95rem; margin-top:12px;">Fill the form and we'll confirm your booking shortly.</p>
+        </div>
+    </div>
+
+    <!-- Booking Section -->
+    <section class="booking-section">
+        <div class="container">
+            <div class="booking-grid">
+
+                <!-- ── Booking Form ── -->
+                <div class="booking-form-card animate-fade-up">
+                    <h2>Appointment Details</h2>
+                    <p class="sub">All fields marked with <span style="color:#e55;">*</span> are required.</p>
+
+                    <form id="bookingForm" novalidate>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Full Name <span class="req">*</span></label>
+                                <input type="text" id="name" placeholder="Your full name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Phone Number <span class="req">*</span></label>
+                                <input type="tel" id="phone" placeholder="+91 98765 43210" required>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label>Email Address <span class="req">*</span></label>
+                            <input type="email" id="email" placeholder="you@email.com (for confirmation)" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Select Service <span class="req">*</span></label>
+                            <select id="service" required>
+                                <option value="" disabled selected>Choose a service...</option>
+                                <optgroup label="💇 Hair Services">
+                                    <option>Haircut & Styling</option>
+                                    <option>Hair Coloring</option>
+                                    <option>Balayage / Highlights</option>
+                                    <option>Keratin Treatment</option>
+                                    <option>Hair Smoothening</option>
+                                    <option>Hair Spa</option>
+                                    <option>Rebonding</option>
+                                </optgroup>
+                                <optgroup label="💄 Makeup">
+                                    <option>Party Makeup</option>
+                                    <option>HD Makeup</option>
+                                    <option>Airbrush Makeup</option>
+                                    <option>Engagement Makeup</option>
+                                    <option>Eye Makeup</option>
+                                </optgroup>
+                                <optgroup label="👰 Bridal">
+                                    <option>Bridal Makeup Package</option>
+                                    <option>Pre-Bridal Package</option>
+                                    <option>Bridal Hairstyling</option>
+                                    <option>Saree Draping</option>
+                                    <option>Complete Bridal Package</option>
+                                </optgroup>
+                                <optgroup label="💅 Nail Services">
+                                    <option>Acrylic Nail Extensions</option>
+                                    <option>Gel Nail Extensions</option>
+                                    <option>Nail Art</option>
+                                    <option>Manicure</option>
+                                    <option>Pedicure</option>
+                                    <option>Manicure + Pedicure Combo</option>
+                                </optgroup>
+                                <optgroup label="✨ Skin & Beauty">
+                                    <option>Facial</option>
+                                    <option>Deep Cleanup</option>
+                                    <option>Bleach</option>
+                                    <option>Waxing (Full Arms / Legs)</option>
+                                    <option>Full Body Waxing</option>
+                                    <option>Threading</option>
+                                    <option>Eyebrow Shaping</option>
+                                    <option>Upper Lip Threading</option>
+                                </optgroup>
+                                <optgroup label="🧘 Spa & Wellness">
+                                    <option>Head Massage</option>
+                                    <option>Body Massage</option>
+                                    <option>De-Tan Treatment</option>
+                                    <option>Anti-Acne Treatment</option>
+                                </optgroup>
+                                <option value="Other">Other (mention in notes)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Preferred Date <span class="req">*</span></label>
+                                <input type="date" id="date" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Preferred Time <span class="req">*</span></label>
+                                <select id="time" required>
+                                    <option value="" disabled selected>Select time...</option>
+                                    <option>09:00 AM</option>
+                                    <option>09:30 AM</option>
+                                    <option>10:00 AM</option>
+                                    <option>10:30 AM</option>
+                                    <option>11:00 AM</option>
+                                    <option>11:30 AM</option>
+                                    <option>12:00 PM</option>
+                                    <option>12:30 PM</option>
+                                    <option>01:00 PM</option>
+                                    <option>01:30 PM</option>
+                                    <option>02:00 PM</option>
+                                    <option>02:30 PM</option>
+                                    <option>03:00 PM</option>
+                                    <option>03:30 PM</option>
+                                    <option>04:00 PM</option>
+                                    <option>04:30 PM</option>
+                                    <option>05:00 PM</option>
+                                    <option>05:30 PM</option>
+                                    <option>06:00 PM</option>
+                                    <option>06:30 PM</option>
+                                    <option>07:00 PM</option>
+                                    <option>07:30 PM</option>
+                                    <option>08:00 PM</option>
+                                    <option>08:30 PM</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Additional Notes</label>
+                            <textarea id="notes" placeholder="Any special requests, allergies, or preferences..."></textarea>
+                        </div>
+
+                        <button type="submit" class="booking-submit-btn" id="submitBtn">
+                            <i class="fa-solid fa-calendar-check"></i>
+                            <span>Confirm Appointment</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- ── Sidebar Info ── -->
+                <div class="booking-info animate-fade-up" style="animation-delay: 0.15s;">
+
+                    <div class="info-card">
+                        <h3><i class="fa-regular fa-clock"></i> Salon Hours</h3>
+                        <div class="timing-row"><span>Monday – Sunday</span><span>9:00 AM – 9:00 PM</span></div>
+                        <div class="timing-row" style="margin-top:12px;"><span style="color:#cba052; font-family:'Montserrat',sans-serif; font-size:0.8rem;">🌈 LGBTQ+ Friendly Space</span></div>
+                    </div>
+
+                    <div class="info-card">
+                        <h3><i class="fa-solid fa-location-dot"></i> Find Us</h3>
+                        <ul>
+                            <li><i class="fa-solid fa-map-pin"></i> Shop No 6, The Signature Appartment, Lohamandi, Agra, UP 282007</li>
+                            <li><i class="fa-solid fa-phone"></i> <a href="tel:07536055666" style="color:#bbb; text-decoration:none;">075360 55666</a></li>
+                            <li><i class="fa-solid fa-envelope"></i> <a href="mailto:info@thestudio26.com" style="color:#bbb; text-decoration:none;">info@thestudio26.com</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="info-card">
+                        <h3><i class="fa-solid fa-circle-info"></i> Important Notes</h3>
+                        <ul>
+                            <li><i class="fa-solid fa-check"></i> We'll confirm within 1-2 hours</li>
+                            <li><i class="fa-solid fa-check"></i> Please arrive 5 mins early</li>
+                            <li><i class="fa-solid fa-check"></i> Free consultation included</li>
+                            <li><i class="fa-solid fa-check"></i> Hygienic & premium products</li>
+                        </ul>
+                    </div>
+
+                    <a href="https://wa.me/917536055666?text=Hi!%20I%20want%20to%20book%20an%20appointment%20at%20The%20Studio%2026%20Salon." 
+                       target="_blank" class="whatsapp-book">
+                        <i class="fa-brands fa-whatsapp fa-lg"></i>
+                        Book Instantly via WhatsApp
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-col brand-col">
+                <div class="logo">
+                    <img src="Logo.png" alt="Logo" class="logo-icon-img">
+                    <div class="logo-text">
+                        <span class="logo-title">THE STUDIO 26</span>
+                        <span class="logo-subtitle">SALON</span>
+                    </div>
+                </div>
+                <p class="footer-desc">Elevating beauty & confidence with expert care and luxury services in Agra.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/the.studio26.salon/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://wa.me/917536055666"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h3>QUICK LINKS</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="bridal.html">Bridal</a></li>
+                    <li><a href="booking.html">Book Appointment</a></li>
+                    <li><a href="reviews.html">Reviews</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>OUR SERVICES</h3>
+                <ul>
+                    <li><a href="booking.html?service=Haircut">Hair Services</a></li>
+                    <li><a href="booking.html?service=Makeup">Makeup</a></li>
+                    <li><a href="booking.html?service=Bridal">Bridal Services</a></li>
+                    <li><a href="booking.html?service=Nails">Nail Services</a></li>
+                    <li><a href="booking.html?service=Facial">Skin & Beauty</a></li>
+                    <li><a href="booking.html?service=Massage">Spa & Massage</a></li>
+                </ul>
+            </div>
+            <div class="footer-col contact-col">
+                <h3>CONTACT INFO</h3>
+                <ul>
+                    <li><i class="fa-solid fa-location-dot"></i><span>Shop No 6, The Signature Appartment, Lohamandi, Agra, UP 282007</span></li>
+                    <li><i class="fa-solid fa-phone"></i><a href="tel:07536055666">075360 55666</a></li>
+                    <li><i class="fa-solid fa-envelope"></i><a href="mailto:info@thestudio26.com">info@thestudio26.com</a></li>
+                    <li><i class="fa-regular fa-clock"></i><span>Mon - Sun: 9:00 AM - 9:00 PM</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom container">
+            <p>&copy; 2024 The Studio 26 Salon. All Rights Reserved.</p>
+            <p>Designed with <i class="fa-solid fa-heart" style="color:red;"></i> for The Studio 26 Salon</p>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/917536055666" class="floating-wa" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+
+    <script src="script.js"></script>
+    <script>
+        const API = 'http://localhost:3001/api';
+
+        // Pre-fill service from URL param (e.g. from services page)
+        const urlParams = new URLSearchParams(window.location.search);
+        const preService = urlParams.get('service');
+        if (preService) {
+            const sel = document.getElementById('service');
+            for (let opt of sel.options) {
+                if (opt.value.toLowerCase().includes(preService.toLowerCase()) ||
+                    opt.text.toLowerCase().includes(preService.toLowerCase())) {
+                    opt.selected = true;
+                    break;
+                }
+            }
+        }
+
+        // Set min date to today
+        const dateInput = document.getElementById('date');
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.setAttribute('min', today);
+
+        // Toast helper
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => toast.classList.remove('show'), 4500);
+        }
+
+        // Form submit
+        document.getElementById('bookingForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const name    = document.getElementById('name').value.trim();
+            const phone   = document.getElementById('phone').value.trim();
+            const email   = document.getElementById('email').value.trim();
+            const service = document.getElementById('service').value;
+            const date    = document.getElementById('date').value;
+            const time    = document.getElementById('time').value;
+            const notes   = document.getElementById('notes').value.trim();
+            const toast = document.getElementById('toast');
+
+            if (!name || !phone || !email || !service || !date || !time) {
+                toast.textContent = '⚠️ Please fill all required fields, including email.';
+                toast.className = 'toast show error';
+                setTimeout(() => toast.className = 'toast', 3000);
+                return;
+            }
+
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Booking...</span>';
+
+            try {
+                const res = await fetch(`${API}/book`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, phone, email, service, date, time, notes, source: 'booking-page' })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    showToast('✅ Appointment booked! We will confirm shortly.', 'success');
+                    document.getElementById('bookingForm').reset();
+                } else {
+                    showToast(data.message || 'Something went wrong. Please try again.', 'error');
+                }
+            } catch (err) {
+                // If server is not running, fallback to WhatsApp
+                const waText = encodeURIComponent(`Hi! I want to book an appointment.\nName: ${name}\nPhone: ${phone}\nService: ${service}\nDate: ${date}\nTime: ${time}\nNotes: ${notes}`);
+                showToast('Server not reachable. Redirecting to WhatsApp...', 'error');
+                setTimeout(() => window.open(`https://wa.me/917536055666?text=${waText}`, '_blank'), 2000);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-calendar-check"></i> <span>Confirm Appointment</span>';
+            }
+        });
+    </script>
+</body>
+</html>
