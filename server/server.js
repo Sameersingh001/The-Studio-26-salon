@@ -14,9 +14,13 @@ app.use(express.json());
 app.use(express.static('../')); // Serve the HTML files
 
 // ─── MongoDB Connection ───────────────────────────────────────────
-mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log('✅ MongoDB Atlas connected successfully'))
-    .catch(err => console.error('❌ MongoDB connection error:', err));
+if (!process.env.MONGODB_URI) {
+    console.error('❌ MONGODB_URI is not defined in environment variables.');
+} else {
+    mongoose.connect(process.env.MONGODB_URI)
+        .then(() => console.log('✅ MongoDB Atlas connected successfully'))
+        .catch(err => console.error('❌ MongoDB connection error:', err));
+}
 
 // ─── Brevo Email Setup ────────────────────────────────────────────
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
@@ -56,35 +60,37 @@ app.post('/api/book', async (req, res) => {
 
         // Save to MongoDB
         const appointment = new Appointment({ name, phone, email, service, date, time, notes, source });
-        await appointment.save();
 
-        // ── Email to OWNER ──
-        await sendEmail({
-            to: process.env.OWNER_EMAIL,
-            toName: 'Salon Owner',
-            subject: `🔔 New Appointment: ${name} — ${service}`,
-            htmlContent: `
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #fff; border-radius: 12px; overflow: hidden;">
-                    <div style="background: linear-gradient(135deg, #cba052, #8a6820); padding: 30px; text-align: center;">
-                        <h1 style="margin: 0; font-size: 24px;">🌟 New Appointment Booked!</h1>
-                    </div>
-                    <div style="padding: 30px;">
-                        <table style="width: 100%; border-collapse: collapse;">
-                            <tr><td style="padding: 10px 0; color: #cba052; font-weight: bold; width: 40%;">Client Name</td><td style="padding: 10px 0; color: #fff;">${name}</td></tr>
-                            <tr><td style="padding: 10px 0; color: #cba052; font-weight: bold;">Phone</td><td style="padding: 10px 0; color: #fff;"><a href="tel:${phone}" style="color: #fff;">${phone}</a></td></tr>
-                            <tr><td style="padding: 10px 0; color: #cba052; font-weight: bold;">Email</td><td style="padding: 10px 0; color: #fff;">${email || 'Not provided'}</td></tr>
-                            <tr><td style="padding: 10px 0; color: #cba052; font-weight: bold;">Service</td><td style="padding: 10px 0; color: #fff;">${service}</td></tr>
-                            <tr><td style="padding: 10px 0; color: #cba052; font-weight: bold;">Date</td><td style="padding: 10px 0; color: #fff;">${date}</td></tr>
-                            <tr><td style="padding: 10px 0; color: #cba052; font-weight: bold;">Time</td><td style="padding: 10px 0; color: #fff;">${time}</td></tr>
-                            <tr><td style="padding: 10px 0; color: #cba052; font-weight: bold;">Notes</td><td style="padding: 10px 0; color: #fff;">${notes || 'None'}</td></tr>
-                        </table>
-                        <div style="margin-top: 20px; text-align: center;">
-                            <a href="${process.env.BASE_URL || `http://localhost:${PORT}`}/admin.html" style="background: #cba052; color: #000; padding: 12px 30px; border-radius: 8px; text-decoration: none; font-weight: bold;">View in Admin Panel</a>
+        // Run DB save and Email sending in parallel to speed up the response
+        await Promise.all([
+            appointment.save(),
+            sendEmail({
+                to: process.env.OWNER_EMAIL,
+                toName: 'Salon Owner',
+                subject: `🔔 New Appointment: ${name} — ${service}`,
+                htmlContent: `
+                    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #fff; border-radius: 12px; overflow: hidden;">
+                        <div style="background: linear-gradient(135deg, #cba052, #8a6820); padding: 30px; text-align: center;">
+                            <h1 style="margin: 0; font-size: 24px;">🌟 New Appointment Booked!</h1>
+                        </div>
+                        <div style="padding: 30px;">
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <tr><td style="padding: 10px 0; color: #cba052; font-weight: bold; width: 40%;">Client Name</td><td style="padding: 10px 0; color: #fff;">${name}</td></tr>
+                                <tr><td style="padding: 10px 0; color: #cba052; font-weight: bold;">Phone</td><td style="padding: 10px 0; color: #fff;"><a href="tel:${phone}" style="color: #fff;">${phone}</a></td></tr>
+                                <tr><td style="padding: 10px 0; color: #cba052; font-weight: bold;">Email</td><td style="padding: 10px 0; color: #fff;">${email || 'Not provided'}</td></tr>
+                                <tr><td style="padding: 10px 0; color: #cba052; font-weight: bold;">Service</td><td style="padding: 10px 0; color: #fff;">${service}</td></tr>
+                                <tr><td style="padding: 10px 0; color: #cba052; font-weight: bold;">Date</td><td style="padding: 10px 0; color: #fff;">${date}</td></tr>
+                                <tr><td style="padding: 10px 0; color: #cba052; font-weight: bold;">Time</td><td style="padding: 10px 0; color: #fff;">${time}</td></tr>
+                                <tr><td style="padding: 10px 0; color: #cba052; font-weight: bold;">Notes</td><td style="padding: 10px 0; color: #fff;">${notes || 'None'}</td></tr>
+                            </table>
+                            <div style="margin-top: 20px; text-align: center;">
+                                <a href="${process.env.BASE_URL || `http://localhost:${PORT}`}/admin.html" style="background: #cba052; color: #000; padding: 12px 30px; border-radius: 8px; text-decoration: none; font-weight: bold;">View in Admin Panel</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `
-        });
+                `
+            })
+        ]);
 
         res.status(201).json({ success: true, message: 'Appointment booked successfully!', id: appointment._id });
 
