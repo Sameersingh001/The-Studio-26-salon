@@ -79,7 +79,7 @@ app.post('/api/book', async (req, res) => {
                             <tr><td style="padding: 10px 0; color: #cba052; font-weight: bold;">Notes</td><td style="padding: 10px 0; color: #fff;">${notes || 'None'}</td></tr>
                         </table>
                         <div style="margin-top: 20px; text-align: center;">
-                            <a href="http://localhost:${PORT}/admin.html" style="background: #cba052; color: #000; padding: 12px 30px; border-radius: 8px; text-decoration: none; font-weight: bold;">View in Admin Panel</a>
+                            <a href="${process.env.BASE_URL || `http://localhost:${PORT}`}/admin.html" style="background: #cba052; color: #000; padding: 12px 30px; border-radius: 8px; text-decoration: none; font-weight: bold;">View in Admin Panel</a>
                         </div>
                     </div>
                 </div>
