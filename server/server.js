@@ -228,3 +228,6 @@ app.listen(PORT, () => {
     console.log(`🚀 Server running at http://localhost:${PORT}`);
     console.log(`📋 Admin panel: http://localhost:${PORT}/admin.html`);
 });
+
+// Export the app for Vercel Serverless Function compatibility
+module.exports = app;
