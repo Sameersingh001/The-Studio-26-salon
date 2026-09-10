@@ -1817,3 +1817,34 @@ ul {
     -webkit-text-fill-color: transparent;
     display: inline-block;
 }
+
+/* Mobile Adjustments for Reels */
+@media (max-width: 768px) {
+    .reels-track {
+        padding: 20px 40px;
+        gap: 20px;
+        scroll-snap-type: x mandatory;
+    }
+    
+    .reel-item {
+        scroll-snap-align: center;
+        width: 300px;
+        height: 400px;
+    }
+}
+
+@media (max-width: 576px) {
+    .reels-track {
+        padding: 15px 20px;
+        gap: 15px;
+    }
+    
+    .reel-item {
+        width: 280px;
+        height: 380px;
+    }
+    
+    .reels-wrapper::before, .reels-wrapper::after {
+        width: 40px;
+    }
+}

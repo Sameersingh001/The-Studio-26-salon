@@ -80,20 +80,44 @@ const reelsTracks = document.querySelectorAll('.reels-track');
 reelsTracks.forEach(track => {
     let scrollSpeed = 0.5; // Slower speed so users can click
     let scrollPos = 0;
+    let isInteracting = false;
 
     // Duplicate content for seamless infinite scrolling
     const content = track.innerHTML;
     track.innerHTML = content + content; // Duplicate once
 
-    function autoScrollReels() {
-        scrollPos += scrollSpeed;
-        
-        // If scrolled past the first set of items, reset to 0 seamlessly
-        if (scrollPos >= track.scrollWidth / 2) {
-            scrollPos = 0;
+    // Pause on interaction
+    track.addEventListener('mouseenter', () => isInteracting = true);
+    track.addEventListener('mouseleave', () => {
+        isInteracting = false;
+        scrollPos = track.scrollLeft;
+    });
+    
+    track.addEventListener('touchstart', () => isInteracting = true, { passive: true });
+    track.addEventListener('touchend', () => {
+        setTimeout(() => {
+            isInteracting = false;
+            scrollPos = track.scrollLeft;
+        }, 1500); // Wait 1.5s after touch ends before resuming
+    });
+
+    track.addEventListener('scroll', () => {
+        if (isInteracting) {
+            scrollPos = track.scrollLeft;
         }
-        
-        track.scrollLeft = scrollPos;
+    }, { passive: true });
+
+    function autoScrollReels() {
+        if (!isInteracting) {
+            scrollPos += scrollSpeed;
+            
+            // If scrolled past the first set of items, reset to 0 seamlessly
+            if (scrollPos >= track.scrollWidth / 2) {
+                scrollPos = 0;
+            }
+            
+            track.scrollLeft = scrollPos;
+        }
         requestAnimationFrame(autoScrollReels);
     }
 
