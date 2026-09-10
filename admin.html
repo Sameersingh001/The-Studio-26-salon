@@ -139,9 +139,7 @@
             padding: 30px;
         }
 
-        @media (max-width: 768px) {
-            .stats-bar { grid-template-columns: repeat(2, 1fr); }
-        }
+        /* Responsive styling moved to bottom */
 
         .stat-card {
             background: #111;
@@ -320,6 +318,74 @@
 
         /* Loading spinner */
         .spinner { text-align: center; padding: 50px; color: #cba052; font-size: 1.5rem; }
+
+        /* ─── Responsive Design ─── */
+        @media (max-width: 992px) {
+            .stats-bar { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .admin-header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px 20px;
+                text-align: center;
+            }
+            .header-right {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .stats-bar {
+                padding: 20px;
+                gap: 15px;
+            }
+            .table-section {
+                padding: 0 20px 30px;
+            }
+            .table-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 15px;
+            }
+            .filter-group {
+                width: 100%;
+                justify-content: center;
+            }
+            .search-input {
+                width: 100%;
+            }
+            .login-card {
+                width: 90%;
+                padding: 40px 25px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .admin-header h1 {
+                font-size: 1rem;
+            }
+            .stats-bar {
+                grid-template-columns: 1fr;
+                padding: 15px;
+            }
+            .table-section {
+                padding: 0 15px 20px;
+            }
+            .refresh-btn, .logout-btn {
+                padding: 8px 12px;
+                font-size: 0.75rem;
+            }
+            .filter-btn {
+                padding: 6px 12px;
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Custom Scrollbar for Table Wrapper */
+        .table-wrapper::-webkit-scrollbar { height: 8px; }
+        .table-wrapper::-webkit-scrollbar-track { background: #111; border-radius: 10px; }
+        .table-wrapper::-webkit-scrollbar-thumb { background: rgba(203,160,82,0.4); border-radius: 10px; }
+        .table-wrapper::-webkit-scrollbar-thumb:hover { background: #cba052; }
     </style>
 </head>
 <body>
